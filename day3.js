@@ -12,13 +12,11 @@ function asyncReadFile(filename) {
 }
 const itemsList = asyncReadFile("./day3.txt");
 const splitRucksacks = (array) => {
-	const splitSacks = [];
-	array.forEach((rucksack) => {
+	return array.map((rucksack) => {
 		const rucksackOne = rucksack.slice(0, rucksack.length / 2).split("");
 		const rucksackTwo = rucksack.slice(rucksack.length / 2).split("");
-		splitSacks.push([rucksackOne, rucksackTwo]);
+		return [rucksackOne, rucksackTwo];
 	});
-	return splitSacks;
 };
 
 const charToPriority = (char) => {
@@ -27,17 +25,14 @@ const charToPriority = (char) => {
 };
 
 const sumPriorities = (rucksacks) => {
-	let sum = 0;
-	rucksacks.forEach((rucksack) => {
+	return rucksacks.reduce((rucksack) => {
 		const [compartOne, compartTwo] = rucksack;
 		for (let i = 0; i < compartOne.length; i++) {
 			if (compartTwo.indexOf(compartOne[i]) >= 0) {
-				sum += charToPriority(compartOne[i]);
-				break;
+				return charToPriority(compartOne[i]);
 			}
 		}
-	});
-	return sum;
+	}, 0);
 };
 
 const allRucksacks = splitRucksacks(itemsList);
