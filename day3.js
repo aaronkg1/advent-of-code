@@ -25,14 +25,17 @@ const charToPriority = (char) => {
 };
 
 const sumPriorities = (rucksacks) => {
-	return rucksacks.reduce((rucksack) => {
+	let sum = 0;
+	rucksacks.forEach((rucksack) => {
 		const [compartOne, compartTwo] = rucksack;
 		for (let i = 0; i < compartOne.length; i++) {
 			if (compartTwo.indexOf(compartOne[i]) >= 0) {
-				return charToPriority(compartOne[i]);
+				sum += charToPriority(compartOne[i]);
+				break;
 			}
 		}
-	}, 0);
+	});
+	return sum;
 };
 
 const allRucksacks = splitRucksacks(itemsList);
