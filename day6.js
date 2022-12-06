@@ -2,10 +2,7 @@ import { readFileSync, promises as fsPromises } from "fs";
 
 function asyncReadFile(filename) {
 	try {
-		const contents = readFileSync(filename, "utf-8");
-
-		const arr = contents.split("");
-		return arr;
+		return readFileSync(filename, "utf-8");
 	} catch (err) {
 		console.log(err);
 	}
@@ -13,15 +10,13 @@ function asyncReadFile(filename) {
 
 const datastream = asyncReadFile("day6.txt");
 
-const findBuffer = (stream, bufferLength) => {
+const findBuffer = async (stream, bufferLength) => {
 	for (let i = 0; i < stream.length; i++) {
 		let startFound = true;
 		const startSignal = stream.slice(i, i + bufferLength);
 		for (let j = 0; j < startSignal.length; j++) {
-			const charCount = startSignal.filter(
-				(val) => val === startSignal[j]
-			).length;
-			if (charCount > 1) {
+			const charIndex = startSignal.indexOf(startSignal[j], j + 1);
+			if (charIndex > -1) {
 				startFound = false;
 				break;
 			}
@@ -29,14 +24,15 @@ const findBuffer = (stream, bufferLength) => {
 				return i + bufferLength;
 			}
 		}
-		if (startFound) {
-			break;
-		}
 	}
 };
+const startOne = performance.now();
+const partOne = await findBuffer(datastream, 4);
+const endOne = performance.now();
+console.log("Part One:", partOne, `Execution time: ${endOne - startOne} ms`); // Part One: 1640 Execution time: 0.2870829105377197 ms
 
-const partOne = findBuffer(datastream, 4); // 1640
-const partTwo = findBuffer(datastream, 14); // 3613
+const startTwo = performance.now();
+const partTwo = await findBuffer(datastream, 14);
+const endTwo = performance.now();
 
-console.log("Part One:", partOne);
-console.log("Part Two:", partTwo);
+console.log("Part Two:", partTwo, `Execution time: ${endTwo - startTwo} ms`); // Part Two: 3613 Execution time: 0.406207799911499 ms
